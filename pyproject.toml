@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "foaimodel"
+version = "0.1.0"
+description = ""
+authors = ["Dariusz Homa <dariuszhoma7@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.scripts]
+lint = "scripts.scripts:run_linter"
+typecheck = "scripts.scripts:run_type_checker"
+test = "scripts.scripts:run_tests"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.15.0"
+pytest = "^8.3.5"
+pytest-cov = "^6.0.0"
+pylint = "^3.3.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
