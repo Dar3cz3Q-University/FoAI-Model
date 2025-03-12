@@ -1,4 +1,4 @@
-name: CI
+name: Pipeline
 run-name: Deploy by @${{ github.actor }}
 
 on:
