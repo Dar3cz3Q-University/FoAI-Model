@@ -1,10 +1,12 @@
 # Fundamentals of AI - Model
 
 [![Pipeline status](https://github.com/Dar3cz3Q-University/FoAI-Model/actions/workflows/ci.yml/badge.svg)](https://github.com/Dar3cz3Q-University/FoAI-Model/tree/master)
+[![PyPI version](https://img.shields.io/pypi/v/cv-model)](https://pypi.org/project/cv-model/)
+[![Python version](https://img.shields.io/pypi/pyversions/cv-model)](https://pypi.org/project/cv-model/)
 
 ---
 
-## Local Development
+## Installation
 
 1. Clone repository
     ``` shell
