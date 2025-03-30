@@ -28,7 +28,7 @@ jobs:
         run: npm init -y
 
       - name: Install semantic-release with plugins
-        run: npm install --save-dev semantic-release @semantic-release/exec
+        run: npm install --save-dev semantic-release @semantic-release/git @semantic-release/exec
 
       - name: Run Semantic Release manually
         run: npx semantic-release
