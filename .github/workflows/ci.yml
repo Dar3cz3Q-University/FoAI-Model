@@ -2,12 +2,12 @@ name: Pipeline
 run-name: Deploy by @${{ github.actor }}
 
 on:
-    push:
+  push:
+    branches:
+      - master
+  pull_request:
       branches:
-        - master
-    pull_request:
-        branches:
-            - master
+          - master
 
 jobs:
   lint:

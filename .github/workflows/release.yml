@@ -1,42 +1,32 @@
 name: Release
-run-name: Deploy by @${{ github.actor }}
 
 on:
-  push:
-    branches:
-      - master
-
-permissions:
-  contents: read
+  workflow_run:
+    workflows: ["Pipeline"]
+    types:
+      - completed
 
 jobs:
   release:
-    name: Release
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'master'
+    name: Semantic Release
     runs-on: ubuntu-latest
     permissions:
       contents: write
       issues: write
       pull-requests: write
-      id-token: write
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Run Semantic Release
+        uses: cycjimmy/semantic-release-action@v4
         with:
-          node-version: "lts/*"
-
-      - name: Install dependencies
-        run: npm clean-install
-
-      - name: Verify the integrity of provenance attestations and registry signatures for installed dependencies
-        run: npm audit signatures
-
-      - name: Release
+          semantic_version: 22
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: npx semantic-release
