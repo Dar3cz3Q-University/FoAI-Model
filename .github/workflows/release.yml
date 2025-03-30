@@ -19,14 +19,13 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+      - name: Init empty package.json
+        run: npm init -y
 
-      - name: Run Semantic Release
-        uses: cycjimmy/semantic-release-action@v4
-        with:
-          semantic_version: 22
+      - name: Install semantic-release with plugins
+        run: npm install --save-dev semantic-release @semantic-release/exec
+
+      - name: Run Semantic Release manually
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
