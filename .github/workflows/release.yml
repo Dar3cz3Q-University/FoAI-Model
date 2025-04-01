@@ -8,16 +8,20 @@ on:
 
 jobs:
   tag:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+
     if: >
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'master'
 
-    name: Semantic Release
-    runs-on: ubuntu-latest
     permissions:
       contents: write
       issues: write
       pull-requests: write
+
+    outputs:
+      released: ${{ steps.release.outputs.released }}
 
     steps:
       - name: Checkout repository
@@ -42,14 +46,22 @@ jobs:
         run: npm install --save-dev semantic-release @semantic-release/git @semantic-release/exec
 
       - name: Run Semantic Release
-        run: npx semantic-release
+        run: |
+          npx semantic-release > result.log || true
+          if grep -q "Published release" result.log; then
+            echo "released=true" >> $GITHUB_OUTPUT
+          else
+            echo "released=false" >> $GITHUB_OUTPUT
+          fi
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
   publish:
     name: Publish to PyPI
-    needs: tag
     runs-on: ubuntu-latest
+    needs: tag
+
+    if: needs.tag.outputs.released == 'true'
 
     steps:
       - name: Checkout repository
