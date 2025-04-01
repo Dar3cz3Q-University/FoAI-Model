@@ -21,7 +21,7 @@ jobs:
       pull-requests: write
 
     outputs:
-      released: ${{ steps.release.outputs.released }}
+      released: ${{ steps.check_release.outputs.released }}
 
     steps:
       - name: Checkout repository
@@ -55,6 +55,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Check if version changed
+        id: check_release
         run: |
           NEW_VERSION=$(cat version || echo 'none')
           if [ "$NEW_VERSION" != "$OLD_VERSION" ]; then
