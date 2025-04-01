@@ -1,4 +1,6 @@
-# Określenie tematu i celu projektu, analiza wymagań
+---
+title: Określenie tematu i celu projektu, analiza wymagań
+---
 
 ## Temat projektu
 Projekt zakłada stworzenie modelu sztucznej inteligencji, który na podstawie analizy CV kandydatów klasyfikuje ich do najbardziej odpowiedniego działu w firmie, np. HR, IT, Finanse, Marketing itd.

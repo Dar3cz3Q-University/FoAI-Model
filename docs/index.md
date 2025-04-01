@@ -1,3 +1,6 @@
-# Sprawozdanie
+---
+title: Sprawozdanie
+---
+# Lista milestone'ów
 
-## 1. [Określenie tematu i celu projektu, analiza wymagań](MileStone#1.md)
+## 1. [Określenie tematu i celu projektu, analiza wymagań](project-overview.md)

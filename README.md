@@ -25,4 +25,4 @@
 
 ## Report
 
-[View the report](/docs/Report.md)
+[View the report](https://dar3cz3q-university.github.io/FoAI-Model/)
