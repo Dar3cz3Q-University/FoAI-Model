@@ -1,3 +1,3 @@
 # Sprawozdanie
 
-## 1. [Określenie tematu i celu projektu, analiza wymagań](ProjectGoal.md)
+## 1. [Określenie tematu i celu projektu, analiza wymagań](MileStone#1.md)
