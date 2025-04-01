@@ -29,6 +29,8 @@ def train_model(input_csv):
 
     dump(model, MODEL_PATH)
 
+    print("Model saved!")
+
 
 def main():
     parser = argparse.ArgumentParser(description="Train CV classifier model.")
