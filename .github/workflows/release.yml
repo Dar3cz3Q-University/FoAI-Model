@@ -45,16 +45,25 @@ jobs:
       - name: Install semantic-release with plugins
         run: npm install --save-dev semantic-release @semantic-release/git @semantic-release/exec
 
-      - name: Run Semantic Release
+      - name: Save old version
         run: |
-          npx semantic-release > result.log || true
-          if grep -q "Published release" result.log; then
-            echo "released=true" >> $GITHUB_OUTPUT
-          else
-            echo "released=false" >> $GITHUB_OUTPUT
-          fi
+          echo "OLD_VERSION=$(cat version || echo 'none')" >> $GITHUB_ENV
+
+      - name: Run Semantic Release
+        run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Check if version changed
+        run: |
+          NEW_VERSION=$(cat version || echo 'none')
+          if [ "$NEW_VERSION" != "$OLD_VERSION" ]; then
+            echo "Version changed: $OLD_VERSION → $NEW_VERSION"
+            echo "released=true" >> $GITHUB_OUTPUT
+          else
+            echo "No new release"
+            echo "released=false" >> $GITHUB_OUTPUT
+          fi
 
   publish:
     name: Publish to PyPI
