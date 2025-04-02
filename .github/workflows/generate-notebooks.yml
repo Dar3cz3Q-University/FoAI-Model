@@ -1,5 +1,5 @@
 name: Generate Notebooks
-run-name: Deploy by @${{ github.actor }}
+run-name: Generate Notebooks by @${{ github.actor }}
 
 on:
   push:
