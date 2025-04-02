@@ -28,3 +28,6 @@
 [View the report](https://dar3cz3q-university.github.io/FoAI-Model/)
 
 ## Related repositories
+
+* [FoAI-Frontend](https://github.com/Dar3cz3Q-University/FoAI-Frontend)  
+* [FoAI-Backend](https://github.com/Dar3cz3Q-University/FoAI-Backend)

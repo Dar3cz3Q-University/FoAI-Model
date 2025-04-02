@@ -31,7 +31,7 @@ jobs:
         - name: Convert notebooks to HTML
           run: |
             for nb in notebooks/*.ipynb; do
-              poetry run jupyter nbconvert --to html "$nb" --output-dir=docs
+              poetry run jupyter nbconvert --to html "$nb" --output-dir=docs/notebooks
             done
 
         - name: Commit and push docs
@@ -39,7 +39,7 @@ jobs:
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
             git add docs/
-            git commit -m "docs: Auto-update notebook HTMLs" || echo "No changes"
+            git commit -m "docs: auto-update notebook HTMLs [skip ci]" || echo "No changes"
 
         - name: Push changes
           uses: ad-m/github-push-action@v0.6.0
