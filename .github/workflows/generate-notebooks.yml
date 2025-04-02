@@ -1,0 +1,43 @@
+name: Generate Notebooks
+run-name: Deploy by @${{ github.actor }}
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  notebook:
+      name: Generating Jupyter Notebooks
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Checkout repo
+          uses: actions/checkout@v4
+
+        - name: Set up Python
+          uses: actions/setup-python@v5
+          with:
+            python-version: '3.12'
+
+        - name: Install Poetry
+          uses: abatilo/actions-poetry@v2
+          with:
+            poetry-version: "latest"
+
+        - name: Install dependencies
+          run: poetry install --with dev
+
+        - name: Convert notebooks to HTML
+          run: |
+            for nb in notebooks/*.ipynb; do
+              poetry run jupyter nbconvert --to html "$nb" --output-dir=docs
+            done
+
+        - name: Commit and push docs
+          run: |
+            git config user.name "github-actions"
+            git config user.email "github-actions@github.com"
+            git add docs/
+            git commit -m "docs: Auto-update notebook HTMLs" || echo "No changes"
+            git push
