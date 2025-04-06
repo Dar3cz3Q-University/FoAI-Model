@@ -1,0 +1,41 @@
+name: Pipeline
+run-name: Pipeline by @${{ github.actor }}
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+      branches:
+          - master
+
+jobs:
+  lint:
+    name: Linting (pylint)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Cache venv
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-${{ runner.os }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install Poetry
+        uses: abatilo/actions-poetry@v2
+        with:
+          poetry-version: "latest"
+
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root --with dev
+
+      - name: Run pylint (Linting)
+        run: poetry run lint
