@@ -3,11 +3,11 @@ import pickle
 import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from huggingface_hub import hf_hub_download
+import nltk
 
 from foai_model.config import MAX_TOKEN_LENGTH
 from foai_model.preprocessing import clean_resume
 
-import nltk
 nltk.download('punkt_tab')
 
 REPO_ID = "Dar3cz3Q/foai_model"
