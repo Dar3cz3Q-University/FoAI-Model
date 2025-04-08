@@ -18,10 +18,15 @@
     ``` shell
     poetry install
     ```
-3. Manually install CUDA support
-    ``` shell
-    poetry run pip install torch==2.5.1+cu121 torchvision==0.20.1+cu121 --index-url https://download.pytorch.org/whl/cu121
-    ```
+3. Manually install torch
+    * With CUDA
+        ``` shell
+        poetry run pip install torch==2.5.1+cu121 torchvision==0.20.1+cu121 --index-url https://download.pytorch.org/whl/cu121
+        ```
+    * Only CPU
+         ``` shell
+        poetry run pip install torch==2.6.0 torchvision==0.21.0
+        ```
 4. Train model
     ``` shell
     poetry run train
