@@ -1,6 +1,13 @@
 import os
 import pickle
 from pathlib import Path
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    classification_report,
+)
 from transformers import (
     AutoTokenizer,
     AutoModelForSequenceClassification,
@@ -12,13 +19,6 @@ from foai_model.logger import logger
 from foai_model.file_reader import read_datasets
 from foai_model.preprocessing import clean_dataset
 from foai_model.utils import log_device_info
-from sklearn.metrics import (
-    accuracy_score,
-    precision_score,
-    recall_score,
-    f1_score,
-    classification_report,
-)
 
 MODEL_PATH = Path("model")
 os.makedirs(MODEL_PATH, exist_ok=True)
