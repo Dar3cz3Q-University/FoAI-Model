@@ -12,6 +12,13 @@ from foai_model.logger import logger
 from foai_model.file_reader import read_datasets
 from foai_model.preprocessing import clean_dataset
 from foai_model.utils import log_device_info
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    classification_report,
+)
 
 MODEL_PATH = Path("model")
 os.makedirs(MODEL_PATH, exist_ok=True)
@@ -36,7 +43,7 @@ def prepare_data():
 
     logger.info("LabelEncoder saved to: %s", encoder_path)
 
-    return [df, dataset]
+    return [df, dataset, label_encoder]
 
 
 def initialize_bert(df):
@@ -56,7 +63,23 @@ def initialize_bert(df):
     return model
 
 
-def train(dataset, model):
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    predictions = logits.argmax(axis=-1)
+
+    return {
+        "accuracy": accuracy_score(labels, predictions),
+        "precision": precision_score(
+            labels, predictions, average="weighted", zero_division=0
+        ),
+        "recall": recall_score(
+            labels, predictions, average="weighted", zero_division=0
+        ),
+        "f1": f1_score(labels, predictions, average="weighted", zero_division=0),
+    }
+
+
+def train(dataset, model, label_encoder):
     logger.info("Initializing training configuration...")
 
     training_args = TrainingArguments(
@@ -64,7 +87,7 @@ def train(dataset, model):
         eval_strategy="epoch",
         per_device_train_batch_size=8,
         per_device_eval_batch_size=8,
-        num_train_epochs=3,
+        num_train_epochs=4,
         weight_decay=0.01,
         logging_dir=MODEL_PATH / "logs",
         logging_steps=10,
@@ -87,6 +110,7 @@ def train(dataset, model):
         args=training_args,
         train_dataset=dataset["train"],
         eval_dataset=dataset["test"],
+        compute_metrics=compute_metrics,
     )
 
     logger.info("Starting training...")
@@ -100,13 +124,21 @@ def train(dataset, model):
 
     logger.info("Tokenizer and model saved to: %s", MODEL_PATH / "checkpoint-latest")
 
+    predictions = trainer.predict(dataset["test"])
+    y_pred = predictions.predictions.argmax(axis=-1)
+    y_true = predictions.label_ids
+
+    logger.info(
+        classification_report(y_true, y_pred, target_names=label_encoder.classes_)
+    )
+
 
 def main():
     logger.info("=== Starting training pipeline ===")
     log_device_info()
-    df, dataset = prepare_data()
+    df, dataset, label_encoder = prepare_data()
     model = initialize_bert(df)
-    train(dataset, model)
+    train(dataset, model, label_encoder)
     logger.info("=== Training pipeline completed ===")
 
 
